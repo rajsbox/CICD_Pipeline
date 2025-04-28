@@ -2,6 +2,7 @@ def COLOR_MAP = [
     'SUCCESS': 'good', 
     'FAILURE': 'danger',
 ]
+
 pipeline {
     agent any
     tools {
@@ -21,7 +22,6 @@ pipeline {
     }
 
     stages {
-
         stage('Fetch code') {
             steps {
                 git branch: 'master', url: 'https://github.com/rajsbox/CICD_Pipeline.git'
@@ -114,6 +114,18 @@ pipeline {
                         mv ${ARTIFACT_ID}-${COMPONENT_VERSION}.jar target/WB-1.0.jar
                     """
 
+                    // Ensure Docker is installed inside Jenkins container
+                    echo "Checking if Docker is installed inside the Jenkins container..."
+                    sh """
+                        if ! docker --version; then
+                            echo "Docker not found. Installing Docker..."
+                            apt-get update
+                            apt-get install -y docker.io
+                        else
+                            echo "Docker is already installed."
+                        fi
+                    """
+
                     // Build the Docker image (ensure Dockerfile handles the dynamic JAR path)
                     sh "docker build -t $DOCKER_IMAGE --build-arg JAR_FILE=target/WB-1.0.jar ."
 
@@ -125,6 +137,9 @@ pipeline {
 
                     // Run the new container
                     sh "docker run -d -p $PORT_MAPPING --name $CONTAINER_NAME $DOCKER_IMAGE"
+
+                    // Clean up dangling images
+                    sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
                 }
             }
         }
