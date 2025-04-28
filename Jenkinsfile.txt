@@ -3,98 +3,135 @@ def COLOR_MAP = [
     'FAILURE': 'danger',
 ]
 pipeline {
-	agent any
-	tools {
-	    maven "MAVEN3.9.9"
-	    jdk "JDK17"
-	}
+    agent any
+    tools {
+        maven "MAVEN3.9.9"
+        jdk "JDK17"
+    }
 
-	stages {
+    environment {
+        DOCKER_IMAGE = 'my-java-webapp'
+        CONTAINER_NAME = 'java-webapp'
+        PORT_MAPPING = '8083:8080'
+        NEXUS_URL = 'http://192.168.1.12:8081'
+        REPOSITORY = 'T3000'
+        GROUP_ID = 'SPPA'
+        ARTIFACT_ID = 'WB'
+        COMPONENT_VERSION = "INC${env.BUILD_ID}"  // Dynamically assign version based on the build ID
+    }
 
+    stages {
 
-	    stage('Fetch code') {
+        stage('Fetch code') {
             steps {
-               git branch: 'master', url: 'https://github.com/rajsbox/my-java-project.git'
+                git branch: 'master', url: 'https://github.com/rajsbox/CICD_Pipeline.git'
             }
+        }
 
-	    }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+            post {
+                success {
+                    echo 'Now Archiving it...'
+                    archiveArtifacts artifacts: '**/target/*.jar'
+                }
+            }
+        }
 
-
-	    stage('Build'){
-	        steps{
-	           sh 'mvn clean install -DskipTests'
-	        }
-
-	        post {
-	           success {
-	              echo 'Now Archiving it...'
-	              archiveArtifacts artifacts: '**/target/*.jar'
-	           }
-	        }
-	    }
-
-	    stage('UNIT TEST') {
-            steps{
+        stage('UNIT TEST') {
+            steps {
                 sh 'mvn test'
             }
         }
 
         stage('Checkstyle Analysis') {
-            steps{
+            steps {
                 sh 'mvn checkstyle:checkstyle'
             }
         }
 
         stage("Sonar Code Analysis") {
-        	environment {
+            environment {
                 scannerHome = tool 'Sonar6.2'
             }
             steps {
-              withSonarQubeEnv('sonarserver') {
-                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
-                   -Dsonar.projectName=vprofile \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/classes \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-              }
+                withSonarQubeEnv('sonarserver') {
+                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                       -Dsonar.projectName=vprofile \
+                       -Dsonar.projectVersion=1.0 \
+                       -Dsonar.sources=src/ \
+                       -Dsonar.java.binaries=target/classes \
+                       -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                       -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                       -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+                }
             }
         }
 
         stage("Quality Gate") {
             steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
-          }
+        }
 
-	     stage("UploadArtifact"){
-            steps{
+        stage("UploadArtifact") {
+            steps {
                 nexusArtifactUploader(
-                  nexusVersion: 'nexus3',
-                  protocol: 'http',
-                  nexusUrl: '192.168.1.12:8081',
-                  groupId: 'SPPA',
-                  version: "INC${env.BUILD_ID}",
-                  repository: 'T3000',
-                  credentialsId: 'nexuxID',
-                  artifacts: [
-                   [artifactId: 'WB',
-                    classifier: '',
-                    file: 'target/WB-1.0.jar',
-                    type: 'jar']
-                  ]
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '192.168.1.12:8081',
+                    groupId: 'SPPA',
+                    version: "INC${env.BUILD_ID}",
+                    repository: 'T3000',
+                    credentialsId: 'nexuxID',
+                    artifacts: [
+                        [artifactId: 'WB',
+                         classifier: '',
+                         file: 'target/WB-1.0.jar',
+                         type: 'jar']
+                    ]
                 )
             }
         }
 
+        // New Docker deployment stage with dynamic Nexus file path
+        stage('Deploy to Docker') {
+            steps {
+                script {
+                    echo 'Building and deploying the Docker image...'
 
-	}
+                    // Dynamically construct the Nexus artifact URL
+                    def jarPath = "${GROUP_ID}/${ARTIFACT_ID}/${COMPONENT_VERSION}/${ARTIFACT_ID}-${COMPONENT_VERSION}.jar"
+                    echo "Nexus JAR Path: ${jarPath}"
 
-  post {
+                    // Download the latest JAR file from Nexus
+                    sh """
+                        curl -u admin:TXPplus05-t3000 -O ${NEXUS_URL}/repository/${REPOSITORY}/${jarPath}
+                        mv ${ARTIFACT_ID}-${COMPONENT_VERSION}.jar target/WB-1.0.jar
+                    """
+
+                    // Build the Docker image (ensure Dockerfile handles the dynamic JAR path)
+                    sh "docker build -t $DOCKER_IMAGE --build-arg JAR_FILE=target/WB-1.0.jar ."
+
+                    // Stop and remove old container if it exists
+                    sh '''
+                        docker stop $CONTAINER_NAME || true
+                        docker rm $CONTAINER_NAME || true
+                    '''
+
+                    // Run the new container
+                    sh "docker run -d -p $PORT_MAPPING --name $CONTAINER_NAME $DOCKER_IMAGE"
+                }
+            }
+        }
+
+    }
+
+    post {
         always {
             echo 'Slack Notifications.'
             slackSend channel: '#devops-cicd',
@@ -102,5 +139,4 @@ pipeline {
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
-
 }
