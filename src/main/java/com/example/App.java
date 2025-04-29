@@ -31,11 +31,15 @@ class HelloController {
                 "    margin-left: 20px;" +
                 "    text-align: justify;" +
                 "}" +
+                "h1 {" +
+                "    text-align: center;" +
+                "}" +
                 ".image-container {" +
                 "    display: flex;" +
                 "    flex-direction: column;" +
                 "    align-items: flex-start;" +
                 "    margin-right: 20px;" +
+                "    margin-top: 60px;" +
                 "}" +
                 ".image-container img {" +
                 "    border: 5px solid white;" +
@@ -44,18 +48,22 @@ class HelloController {
                 ".content {" +
                 "    display: flex;" +
                 "    flex-direction: row-reverse;" +
+                "    align-items: flex-start;" +
                 "}" +
                 ".content div:last-child {" +
                 "    margin-right: 50px;" +
+                "}" +
+                "footer {" +
+                "    margin-top: 10px;" +
                 "}" +
                 "</style>" +
             "</head>" +
             "<body>" +
                 "<div class=\"content\">" +
                 "    <div class=\"image-container\">" +
-                "        <img src=\"/images/image1.jpg\" alt=\"Image 1\" style=\"width:300px;height:auto;\">" +
-                "        <img src=\"/images/image2.jpg\" alt=\"Image 2\" style=\"width:300px;height:auto;\">" +
-                "        <img src=\"/images/image3.jpg\" alt=\"Image 3\" style=\"width:300px;height:auto;\">" +
+                "        <img src=\"/images/image1.jpg\" alt=\"Image 1\" style=\"width:270px;height:auto;\">" +
+                "        <img src=\"/images/image2.jpg\" alt=\"Image 2\" style=\"width:270px;height:auto;\">" +
+                "        <img src=\"/images/image3.jpg\" alt=\"Image 3\" style=\"width:270px;height:auto;\">" +
                 "    </div>" +
                 "    <div>" +
                 "        <h1>Welcome to CICD Pipeline</h1>" +
@@ -64,8 +72,6 @@ class HelloController {
                 "        <p>Continuous Integration involves automatically integrating code changes from multiple contributors into a shared repository several times a day. It helps in identifying bugs early and ensures code quality.</p>" +
                 "        <h2>Continuous Deployment</h2>" +
                 "        <p>Continuous Deployment automates the release of code to production. It ensures that every change passes through automated tests and is deployed without manual intervention.</p>" +
-                "        <p>This practice reduces the time between writing code and delivering it to users, enabling faster iterations and improvements.</p>" +
-                "        <p>Continuous Deployment also minimizes the risk of human error during deployment and ensures a consistent release process.</p>" +
                 "        <h2>Benefits of CICD</h2>" +
                 "        <p>CICD improves collaboration, reduces integration issues, and accelerates the delivery of features to end-users. It fosters a culture of agility and innovation.</p>" +
                 "        <p>By automating repetitive tasks, CICD allows developers to focus on writing quality code. It also ensures faster feedback loops, enabling teams to address issues promptly.</p>" +
@@ -76,9 +82,11 @@ class HelloController {
                 "        <button onclick=\"alert('Understand the Benefits of CICD!')\">Benefits</button>" +
                 "    </div>" +
                 "</div>" +
+                "<div style=\"text-align: left; margin-top: 20px;\">" +
+                "    <p>Current Date and Time: " + java.time.LocalDateTime.now() + "</p>" +
+                "</div>" +
                 "<footer>" +
                     "<p>&copy; 2025 CICD Web Application</p>" +
-                    "<p>Current Date and Time: " + java.time.LocalDateTime.now() + "</p>" +
                 "</footer>" +
             "</body>" +
             "</html>";
@@ -101,6 +109,9 @@ class HelloController {
                 "    margin-left: 40px;" +
                 "    text-align: justify;" +
                 "}" +
+                "h1 {" +
+                "    text-align: center;" +
+                "}" +
                 ".image-container {" +
                 "    display: flex;" +
                 "    flex-direction: column;" +
@@ -111,17 +122,22 @@ class HelloController {
                 "    border: 5px solid white;" +
                 "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" +
                 "}" +
+                "footer {" +
+                "    margin-top: 10px;" +
+                "}" +
                 "</style>" +
             "</head>" +
             "<body>" +
                 "<div class=\"image-container\">" +
-                "    <img src=\"/images/image1.jpg\" alt=\"Image 1\" style=\"width:300px;height:auto;\">" +
-                "    <img src=\"/images/image2.jpg\" alt=\"Image 2\" style=\"width:300px;height:auto;\">" +
-                "    <img src=\"/images/image3.jpg\" alt=\"Image 3\" style=\"width:300px;height:auto;\">" +
+                "    <img src=\"/images/image1.jpg\" alt=\"Image 1\" style=\"width:270px;height:auto;\">" +
+                "    <img src=\"/images/image2.jpg\" alt=\"Image 2\" style=\"width:270px;height:auto;\">" +
+                "    <img src=\"/images/image3.jpg\" alt=\"Image 3\" style=\"width:270px;height:auto;\">" +
+                "</div>" +
+                "<div style=\"text-align: left; margin-top: 20px;\">" +
+                "    <p>Current Date and Time: " + java.time.LocalDateTime.now() + "</p>" +
                 "</div>" +
                 "<footer>" +
                     "<p>&copy; 2025 CICD Web Application</p>" +
-                    "<p>Current Date and Time: " + java.time.LocalDateTime.now() + "</p>" +
                 "</footer>" +
             "</body>" +
             "</html>";
