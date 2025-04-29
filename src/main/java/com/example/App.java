@@ -42,4 +42,25 @@ class HelloController {
             "</body>" +
             "</html>";
     }
+
+    @GetMapping("/images")
+    public String images() {
+        return "<!DOCTYPE html>" +
+            "<html lang=\"en\">" +
+            "<head>" +
+                "<meta charset=\"UTF-8\">" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+                "<title>Images</title>" +
+            "</head>" +
+            "<body>" +
+                "<h1>Static Images</h1>" +
+                "<img src=\"https://via.placeholder.com/150\" alt=\"Placeholder Image 1\">" +
+                "<img src=\"https://via.placeholder.com/200\" alt=\"Placeholder Image 2\">" +
+                "<img src=\"https://via.placeholder.com/250\" alt=\"Placeholder Image 3\">" +
+                "<footer>" +
+                    "<p>&copy; 2025 CICD Web Application</p>" +
+                "</footer>" +
+            "</body>" +
+            "</html>";
+    }
 }
