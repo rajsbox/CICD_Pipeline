@@ -54,9 +54,9 @@ class HelloController {
             "</head>" +
             "<body>" +
                 "<h1>Static Images</h1>" +
-                "<img src=\"https://via.placeholder.com/150\" alt=\"Placeholder Image 1\">" +
-                "<img src=\"https://via.placeholder.com/200\" alt=\"Placeholder Image 2\">" +
-                "<img src=\"https://via.placeholder.com/250\" alt=\"Placeholder Image 3\">" +
+                "<img src=\"/images/image1.jpg\" alt=\"Image 1\">" +
+                "<img src=\"/images/image2.jpg\" alt=\"Image 2\">" +
+                "<img src=\"/images/image3.jpg\" alt=\"Image 3\">" +
                 "<footer>" +
                     "<p>&copy; 2025 CICD Web Application</p>" +
                 "</footer>" +
