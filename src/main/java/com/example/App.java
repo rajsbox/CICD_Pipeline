@@ -30,6 +30,7 @@ class HelloController {
                 "    background-position: center;" +
                 "    margin-left: 20px;" +
                 "    text-align: justify;" +
+                "    margin-right: 20px;" +
                 "}" +
                 "h1 {" +
                 "    text-align: center;" +
@@ -42,6 +43,8 @@ class HelloController {
                 "    margin-top: 60px;" +
                 "}" +
                 ".image-container img {" +
+                "    max-width: 100%;" +
+                "    height: auto;" +
                 "    border: 5px solid white;" +
                 "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" +
                 "}" +
@@ -53,9 +56,10 @@ class HelloController {
                 ".content div:last-child {" +
                 "    margin-right: 50px;" +
                 "}" +
-                "footer, .date-time {" +
-                "    text-align: left;" +
-                "    margin-left: 20px;" +
+                "footer {" +
+                "    text-align: center;" +
+                "    margin-left: 0;" +
+                "    margin-right: 0;" +
                 "}" +
                 "</style>" +
             "</head>" +
@@ -83,7 +87,7 @@ class HelloController {
                 "        <button onclick=\"alert('Understand the Benefits of CICD!')\">Benefits</button>" +
                 "    </div>" +
                 "</div>" +
-                "<div style=\"text-align: left; margin-top: 20px;\">" +
+                "<div style=\"text-align: center; margin-top: 20px;\">" +
                 "    <p>Current Date and Time: " + java.time.LocalDateTime.now() + "</p>" +
                 "</div>" +
                 "<footer>" +
@@ -109,6 +113,7 @@ class HelloController {
                 "    background-position: center;" +
                 "    margin-left: 40px;" +
                 "    text-align: justify;" +
+                "    margin-right: 20px;" +
                 "}" +
                 "h1 {" +
                 "    text-align: center;" +
@@ -120,12 +125,15 @@ class HelloController {
                 "    margin-right: 20px;" +
                 "}" +
                 ".image-container img {" +
+                "    max-width: 100%;" +
+                "    height: auto;" +
                 "    border: 5px solid white;" +
                 "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" +
                 "}" +
-                "footer, .date-time {" +
-                "    text-align: left;" +
-                "    margin-left: 20px;" +
+                "footer {" +
+                "    text-align: center;" +
+                "    margin-left: 0;" +
+                "    margin-right: 0;" +
                 "}" +
                 "</style>" +
             "</head>" +
@@ -135,7 +143,7 @@ class HelloController {
                 "    <img src=\"/images/image2.jpg\" alt=\"Image 2\" style=\"width:270px;height:auto;\">" +
                 "    <img src=\"/images/image3.jpg\" alt=\"Image 3\" style=\"width:270px;height:auto;\">" +
                 "</div>" +
-                "<div style=\"text-align: left; margin-top: 20px;\">" +
+                "<div style=\"text-align: center; margin-top: 20px;\">" +
                 "    <p>Current Date and Time: " + java.time.LocalDateTime.now() + "</p>" +
                 "</div>" +
                 "<footer>" +
