@@ -53,8 +53,9 @@ class HelloController {
                 ".content div:last-child {" +
                 "    margin-right: 50px;" +
                 "}" +
-                "footer {" +
-                "    margin-top: 10px;" +
+                "footer, .date-time {" +
+                "    text-align: left;" +
+                "    margin-left: 20px;" +
                 "}" +
                 "</style>" +
             "</head>" +
@@ -122,8 +123,9 @@ class HelloController {
                 "    border: 5px solid white;" +
                 "    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" +
                 "}" +
-                "footer {" +
-                "    margin-top: 10px;" +
+                "footer, .date-time {" +
+                "    text-align: left;" +
+                "    margin-left: 20px;" +
                 "}" +
                 "</style>" +
             "</head>" +
