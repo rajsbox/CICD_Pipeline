@@ -21,23 +21,23 @@ class HelloController {
             "<head>" +
                 "<meta charset=\"UTF-8\">" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
-                "<title>About India</title>" +
+                "<title>About CICD</title>" +
             "</head>" +
             "<body>" +
-                "<h1>Welcome to India Inc100</h1>" +
-                "<p>India, officially the Republic of India, is a country in South Asia. It is the seventh-largest country by land area, the second-most populous country, and the most populous democracy in the world.</p>" +
-                "<h2>Culture</h2>" +
-                "<p>India is known for its rich cultural heritage, including art, music, dance, and festivals. It is the birthplace of major religions such as Hinduism, Buddhism, Jainism, and Sikhism.</p>" +
-                "<h2>Geography</h2>" +
-                "<p>India is bounded by the Indian Ocean to the south, the Arabian Sea to the southwest, and the Bay of Bengal to the southeast. It shares land borders with Pakistan, China, Nepal, Bhutan, Bangladesh, and Myanmar.</p>" +
-                "<h2>Tourism</h2>" +
-                "<p>India is home to numerous UNESCO World Heritage Sites, including the Taj Mahal, Jaipur City, and the Qutub Minar. It offers diverse landscapes ranging from the Himalayas to the Thar Desert and tropical beaches.</p>" +
+                "<h1>Welcome to CICD Pipeline</h1>" +
+                "<p>Continuous Integration and Continuous Deployment (CICD) are essential practices in modern software development. They enable teams to deliver code changes more frequently and reliably.</p>" +
+                "<h2>Continuous Integration</h2>" +
+                "<p>Continuous Integration involves automatically integrating code changes from multiple contributors into a shared repository several times a day. It helps in identifying bugs early and ensures code quality.</p>" +
+                "<h2>Continuous Deployment</h2>" +
+                "<p>Continuous Deployment automates the release of code to production. It ensures that every change passes through automated tests and is deployed without manual intervention.</p>" +
+                "<h2>Benefits of CICD</h2>" +
+                "<p>CICD improves collaboration, reduces integration issues, and accelerates the delivery of features to end-users. It fosters a culture of agility and innovation.</p>" +
                 "<h2>Explore More</h2>" +
-                "<button onclick=\"alert('Learn about Indian Culture!')\">Culture</button>" +
-                "<button onclick=\"alert('Discover Indian Geography!')\">Geography</button>" +
-                "<button onclick=\"alert('Plan your visit to India!')\">Tourism</button>" +
+                "<button onclick=\"alert('Learn about Continuous Integration!')\">Continuous Integration</button>" +
+                "<button onclick=\"alert('Discover Continuous Deployment!')\">Continuous Deployment</button>" +
+                "<button onclick=\"alert('Understand the Benefits of CICD!')\">Benefits</button>" +
                 "<footer>" +
-                    "<p>&copy; 2025 India Web Application</p>" +
+                    "<p>&copy; 2025 CICD Web Application</p>" +
                 "</footer>" +
             "</body>" +
             "</html>";
