@@ -10,5 +10,5 @@ for volume in jenkins_home nexus_data sonarqube_data sonarqube_extensions; do
   fi
 done
 
-# Start the docker-compose setup
+## Start the docker-compose setup
 docker-compose up -d
