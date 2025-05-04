@@ -14,7 +14,7 @@ pipeline {
         DOCKER_IMAGE = 'my-java-webapp'
         CONTAINER_NAME = 'java-webapp'
         PORT_MAPPING = '8083:8080'
-        NEXUS_URL = 'http://192.168.1.12:8081'
+        NEXUS_URL = 'http://192.168.1.19:8081'
         REPOSITORY = 'T3000'
         GROUP_ID = 'SPPA'
         ARTIFACT_ID = 'WB'
@@ -83,7 +83,7 @@ pipeline {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: '192.168.1.12:8081',
+                    nexusUrl: '192.168.1.19:8081',
                     groupId: 'SPPA',
                     version: "INC${env.BUILD_ID}",
                     repository: 'T3000',
@@ -98,24 +98,23 @@ pipeline {
             }
         }
 
-        // New Docker deployment stage with dynamic Nexus file path
         stage('Deploy to Docker') {
             steps {
                 script {
                     echo 'Building and deploying the Docker image...'
 
-                    // Dynamically construct the Nexus artifact URL
                     def jarPath = "${GROUP_ID}/${ARTIFACT_ID}/${COMPONENT_VERSION}/${ARTIFACT_ID}-${COMPONENT_VERSION}.jar"
                     echo "Nexus JAR Path: ${jarPath}"
 
-                    // Download the latest JAR file from Nexus
-                    sh """
-                        curl -u Nexususername:password -O ${NEXUS_URL}/repository/${REPOSITORY}/${jarPath}
-                        mv ${ARTIFACT_ID}-${COMPONENT_VERSION}.jar target/WB-1.0.jar
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'nexuxID', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                        sh """
+                            set -e
+                            mkdir -p target
+                            curl -u $NEXUS_USER:$NEXUS_PASS -O ${NEXUS_URL}/repository/${REPOSITORY}/${jarPath}
+                            mv ${ARTIFACT_ID}-${COMPONENT_VERSION}.jar target/WB-1.0.jar
+                        """
+                    }
 
-                    // Ensure Docker is installed inside Jenkins container
-                    echo "Checking if Docker is installed inside the Jenkins container..."
                     sh """
                         if ! docker --version; then
                             echo "Docker not found. Installing Docker..."
@@ -126,24 +125,19 @@ pipeline {
                         fi
                     """
 
-                    // Build the Docker image (ensure Dockerfile handles the dynamic JAR path)
                     sh "docker build -t $DOCKER_IMAGE --build-arg JAR_FILE=target/WB-1.0.jar ."
 
-                    // Stop and remove old container if it exists
                     sh '''
                         docker stop $CONTAINER_NAME || true
                         docker rm $CONTAINER_NAME || true
                     '''
 
-                    // Run the new container
                     sh "docker run -d -p $PORT_MAPPING --name $CONTAINER_NAME $DOCKER_IMAGE"
 
-                    // Clean up dangling images
                     sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
                 }
             }
         }
-
     }
 
     post {
