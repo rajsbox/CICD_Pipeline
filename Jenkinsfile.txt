@@ -110,7 +110,7 @@ pipeline {
 
                     // Download the latest JAR file from Nexus
                     sh """
-                        curl -u admin:TXPplus05-t3000 -O ${NEXUS_URL}/repository/${REPOSITORY}/${jarPath}
+                        curl -u Nexususername:password -O ${NEXUS_URL}/repository/${REPOSITORY}/${jarPath}
                         mv ${ARTIFACT_ID}-${COMPONENT_VERSION}.jar target/WB-1.0.jar
                     """
 
